@@ -1,4 +1,3 @@
-package com.company;
 import java.util.*;
 
 class Node{
@@ -11,7 +10,7 @@ class Node{
     }
 }
 
-public class Main {
+public class BST {
     public static Stack<Node> stack = new Stack<Node>();
 
     public static Node BuildTree(int[] list, int min, int max, int size){
