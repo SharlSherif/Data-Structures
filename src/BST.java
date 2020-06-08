@@ -21,27 +21,27 @@ public class BST {
         int index = 0;
         int currentKey;
         // first key in the list
-        Node root = new Node(list[0]);
+        Node root = new Node(list[index]);
         Node currentNode = root;
 
-        while(index < size){
+        while(currentNode != null){
             currentKey = currentNode.key;
             index = index + 1;
-//            if(stack.isEmpty() == false && stack.firstElement().key== currentKey) {
+//            if(stack.isEmpty() == false && stack.firstE lement().key== currentKey) {
 //                continue;
 //            }
             if(index >= size) {
                 return root;
             }
             int nextKey = list[index];
-            if(nextKey < currentKey){
+            if(nextKey < currentKey && nextKey < root.key){
                 Node newNode = new Node(nextKey);
                 // should be added to the left side
                 currentNode.left = newNode;
                 stack.push(currentNode);
                 currentNode = newNode;
             }else {
-                if(nextKey > currentKey && nextKey < stack.firstElement().key){
+                if(nextKey > currentKey  && nextKey > root.key){
                     Node newNode = new Node(nextKey);
                     // should be added to the left side
                     currentNode.right = newNode;
@@ -82,7 +82,25 @@ public class BST {
         }
         return mNode;
     }
+    public static void printAllRootToLeafPaths(Node node,ArrayList path)
+    {
+        if(node==null)
+        {
+            return;
+        }
+        path.add(node.key);
 
+        if(node.left==null && node.right==null)
+        {
+            System.out.println(path);
+            return;
+        }
+        else
+        {
+            printAllRootToLeafPaths(node.left,path);
+            printAllRootToLeafPaths(node.right,path);
+        }
+    }
     public static void printTreeInOrder(Node mNode, String type){
         if(mNode != null) {
             printTreeInOrder(mNode.left, "left");
@@ -95,13 +113,9 @@ public class BST {
         int i=1;
         int[] arr = {63, 34, 20, 16, 23, 44,70,69,74,86};
         Node OurRoot = BuildTree(arr, Integer.MIN_VALUE, Integer.MAX_VALUE, arr.length);
-//        Node root = new Node(arr[0]);
-//        Node lastNodeCache = root;
-//        while(i<= arr.length-1){
-//            lastNodeCache= InsertRecord(lastNodeCache, arr[i]);
-//            i++;
-//        }
         System.out.print("Tree :- \n");
-        printTreeInOrder(OurRoot, "root");
+//        printTreeInOrder(OurRoot, "root");
+        printAllRootToLeafPaths(OurRoot, new ArrayList<Integer>());
     }
+
 }
