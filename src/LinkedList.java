@@ -1,3 +1,5 @@
+import java.util.concurrent.Future;
+
 class LinkedNode {
     int data;
     LinkedNode next;
@@ -142,6 +144,25 @@ public class LinkedList {
         }
     }
 
+    public static void RemoveDuplicates () {
+        LinkedNode HeadNode = LinkedList;
+        LinkedNode FutureNode = HeadNode.next;
+        LinkedNode CurrentNode = HeadNode;
+
+        while (CurrentNode.next != null) {
+            if(CurrentNode.data == FutureNode.data){
+                CurrentNode.next = FutureNode.next;
+                FutureNode = CurrentNode.next;
+                System.out.print("\nDuplicate is found and deleted\n");
+            }else {
+                FutureNode = FutureNode.next;
+                CurrentNode = CurrentNode.next;
+            }
+
+        }
+        LinkedList = HeadNode;
+    }
+
     public static void main(String[] args) {
         int List[] = {10, 11, 12, 13};
 
@@ -150,15 +171,18 @@ public class LinkedList {
 //        BuildLinkedListFromArray(List);
 
 //        InsertAtPos(20, 3);
-        InsertLast(9);
+        InsertLast(1);
         InsertLast(10);
-        InsertLast(20);
+//        InsertLast(10);
+//        InsertLast(10);
         InsertLast(30);
         InsertLast(40);
-        isSorted();
+        InsertLast(50);
+        RemoveDuplicates();
+//        isSorted();
 //        DeleteAtPos(10);
         // print out the LinkedList ordered
-//        DisplayLinkedList();
+        DisplayLinkedList();
         System.out.print("Size is " + Size + "\n");
         System.out.print("Last Node " + LastNode.data + "\n");
         long endTime = System.nanoTime();
