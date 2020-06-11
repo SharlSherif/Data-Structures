@@ -82,7 +82,7 @@ public class LinkedList {
         }
     }
 
-    public static void Delete(int pos) {
+    public static void DeleteAtPos(int pos) {
         LinkedNode HeadNode = LinkedList;
         // looking to delete the first Node
         if(pos == 0) {
@@ -118,6 +118,30 @@ public class LinkedList {
         Size++;
     }
 
+    public static Boolean isSorted () {
+        LinkedNode HeadNode = LinkedList;
+        LinkedNode TailNode = null;
+        LinkedNode CurrentNode = HeadNode;
+        Boolean isSorted = true;
+
+        while (CurrentNode.next != null) {
+            TailNode = CurrentNode;
+            CurrentNode = CurrentNode.next;
+            System.out.print(TailNode.data+" -> "+CurrentNode.data+" -> ");
+            if(CurrentNode.data < TailNode.data){
+                isSorted = false;
+                break;
+            }
+        }
+        if(isSorted) {
+            System.out.print("\nLinkedList is sorted\n");
+            return true;
+        }else {
+            System.out.print("\nLinkedList is not sorted\n");
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
         int List[] = {10, 11, 12, 13};
 
@@ -126,15 +150,15 @@ public class LinkedList {
 //        BuildLinkedListFromArray(List);
 
 //        InsertAtPos(20, 3);
-
         InsertLast(9);
         InsertLast(10);
         InsertLast(20);
         InsertLast(30);
         InsertLast(40);
-        Delete(10);
+        isSorted();
+//        DeleteAtPos(10);
         // print out the LinkedList ordered
-        DisplayLinkedList();
+//        DisplayLinkedList();
         System.out.print("Size is " + Size + "\n");
         System.out.print("Last Node " + LastNode.data + "\n");
         long endTime = System.nanoTime();
