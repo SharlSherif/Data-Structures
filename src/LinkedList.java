@@ -163,26 +163,60 @@ public class LinkedList {
         LinkedList = HeadNode;
     }
 
+    public static void ReverseUsingArray() {
+        int[] A = new int[Size];
+
+        LinkedNode HeadNode = LinkedList;
+        LinkedNode CurrentNode = HeadNode;
+
+        for (int i=1; i<Size; i++) {
+            A[i] = CurrentNode.data;
+            CurrentNode = CurrentNode.next;
+        }
+        HeadNode = LastNode;
+        CurrentNode = HeadNode;
+        for (int k=Size-1; k>=0; k--){
+            CurrentNode.next = new LinkedNode(A[k]);
+            CurrentNode = CurrentNode.next;
+        }
+        LinkedList = HeadNode;
+    }
+
+    public static void ReverseUsingSlidingPointers(){
+        LinkedNode HeadNode = LinkedList;
+        LinkedNode p = HeadNode;
+        LinkedNode q= null, r = null;
+
+        while(p != null) {
+            r = q;
+            q = p;
+            p = p.next;
+            q.next = r;
+        }
+        // because the linked list is reversed, we set the new head to the cached LastNode
+        LinkedList = LastNode;
+        DisplayLinkedList();
+    }
+
     public static void main(String[] args) {
-        int List[] = {10, 11, 12, 13};
+        int List[] = {4, 5, 8, 10};
 
         long startTime = System.nanoTime();
 
-//        BuildLinkedListFromArray(List);
-
+        BuildLinkedListFromArray(List);
+        ReverseUsingSlidingPointers();
 //        InsertAtPos(20, 3);
-        InsertLast(1);
-        InsertLast(10);
+//        InsertLast(1);
 //        InsertLast(10);
-//        InsertLast(10);
-        InsertLast(30);
-        InsertLast(40);
-        InsertLast(50);
-        RemoveDuplicates();
+//        InsertLast(30);
+//        InsertLast(40);
+//        InsertLast(50);
+//        ReverseUsingArray();
+//        RemoveDuplicates();
 //        isSorted();
 //        DeleteAtPos(10);
         // print out the LinkedList ordered
-        DisplayLinkedList();
+//        DisplayLinkedList();
         System.out.print("Size is " + Size + "\n");
         System.out.print("Last Node " + LastNode.data + "\n");
         long endTime = System.nanoTime();
