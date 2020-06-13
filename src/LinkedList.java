@@ -12,12 +12,12 @@ class LinkedNode {
 
 public class LinkedList {
     // cache variables for later use
-    public static LinkedNode LinkedList;
-    public static LinkedNode LastNode;
-    public static int Size;
+    public LinkedNode LinkedList;
+    public LinkedNode LastNode;
+    public int Size = 0;
 
     // convert an array to a LinkedList
-    public static void BuildLinkedListFromArray(int List[]) {
+    public void BuildLinkedListFromArray(int List[]) {
         // array is empty, stop
         if (List.length < 1) return;
 
@@ -33,7 +33,7 @@ public class LinkedList {
                 CurrentNode.next = Node;
                 CurrentNode = CurrentNode.next;
             }
-            Size++;
+            this.Size++;
         }
 
         // cache the first Node to store the entire LinkedList
@@ -43,9 +43,9 @@ public class LinkedList {
     }
 
     // print out the LinkedList in order
-    public static void DisplayLinkedList() {
+    public void DisplayLinkedList() {
         System.out.print("--LinkedList--\n");
-        LinkedNode CurrentNode = LinkedList;
+        LinkedNode CurrentNode = this.LinkedList;
         while (CurrentNode != null) {
             System.out.print(" -> "+CurrentNode.data);
             CurrentNode = CurrentNode.next;
@@ -54,8 +54,8 @@ public class LinkedList {
     }
 
     // insert in specified position
-    public static void InsertAtPos(int data, int pos) {
-        LinkedNode HeadNode = LinkedList;
+    public void InsertAtPos(int data, int pos) {
+        LinkedNode HeadNode = this.LinkedList;
         LinkedNode CurrentNode = HeadNode;
         LinkedNode Node = new LinkedNode(data);
 
@@ -75,7 +75,7 @@ public class LinkedList {
                     LinkedNode TempStoreNode = CurrentNode.next;
                     CurrentNode.next = Node;
                     CurrentNode.next.next = TempStoreNode;
-                    Size++;
+                    this.Size++;
                 }
 
                 CurrentNode = CurrentNode.next;
@@ -84,12 +84,12 @@ public class LinkedList {
         }
     }
 
-    public static void DeleteAtPos(int pos) {
+    public void DeleteAtPos(int pos) {
         LinkedNode HeadNode = LinkedList;
         // looking to delete the first Node
         if(pos == 0) {
             HeadNode = HeadNode.next;
-            Size--;
+            this.Size--;
         }else {
             LinkedNode CurrentNode = HeadNode;
             // Node before the position wanted
@@ -100,16 +100,16 @@ public class LinkedList {
             // make sure that the CurrentNode is not null and it also has a "next" in order to stay safe
             if(CurrentNode != null && CurrentNode.next != null) {
                 CurrentNode.next = CurrentNode.next.next;
-                Size--;
+                this.Size--;
             } else {
                 System.out.print("Position "+pos + " was not found, nothing was deleted\n");
             }
         }
 
-        LinkedList = HeadNode;
+        this.LinkedList = HeadNode;
     }
 
-    public static void InsertLast(int data) {
+    public void InsertLast(int data) {
         LinkedNode Node = new LinkedNode(data);
         if (LinkedList == null) {
             LinkedList = LastNode = Node;
@@ -117,11 +117,11 @@ public class LinkedList {
             LastNode.next = Node;
             LastNode = Node;
         }
-        Size++;
+        this.Size++;
     }
 
-    public static Boolean isSorted () {
-        LinkedNode HeadNode = LinkedList;
+    public Boolean isSorted () {
+        LinkedNode HeadNode = this.LinkedList;
         LinkedNode TailNode = null;
         LinkedNode CurrentNode = HeadNode;
         Boolean isSorted = true;
@@ -144,8 +144,8 @@ public class LinkedList {
         }
     }
 
-    public static void RemoveDuplicates () {
-        LinkedNode HeadNode = LinkedList;
+    public void RemoveDuplicates () {
+        LinkedNode HeadNode = this.LinkedList;
         LinkedNode FutureNode = HeadNode.next;
         LinkedNode CurrentNode = HeadNode;
 
@@ -160,30 +160,30 @@ public class LinkedList {
             }
 
         }
-        LinkedList = HeadNode;
+        this.LinkedList = HeadNode;
     }
 
-    public static void ReverseUsingArray() {
-        int[] A = new int[Size];
+    public void ReverseUsingArray() {
+        int[] A = new int[this.Size];
 
-        LinkedNode HeadNode = LinkedList;
+        LinkedNode HeadNode = this.LinkedList;
         LinkedNode CurrentNode = HeadNode;
 
-        for (int i=1; i<Size; i++) {
+        for (int i=1; i<this.Size; i++) {
             A[i] = CurrentNode.data;
             CurrentNode = CurrentNode.next;
         }
-        HeadNode = LastNode;
+        HeadNode = this.LastNode;
         CurrentNode = HeadNode;
-        for (int k=Size-1; k>=0; k--){
+        for (int k=this.Size-1; k>=0; k--){
             CurrentNode.next = new LinkedNode(A[k]);
             CurrentNode = CurrentNode.next;
         }
-        LinkedList = HeadNode;
+        this.LinkedList = HeadNode;
     }
 
-    public static void ReverseUsingSlidingPointers(){
-        LinkedNode HeadNode = LinkedList;
+    public void ReverseUsingSlidingPointers(){
+        LinkedNode HeadNode = this.LinkedList;
         LinkedNode p = HeadNode;
         LinkedNode q= null, r = null;
 
@@ -194,17 +194,39 @@ public class LinkedList {
             q.next = r;
         }
         // because the linked list is reversed, we set the new head to the cached LastNode
-        LinkedList = LastNode;
+        this.LinkedList = this.LastNode;
         DisplayLinkedList();
     }
 
-    public static void main(String[] args) {
-        int List[] = {4, 5, 8, 10};
+    public void Concatenate(LinkedList List) {
+        // make sure that there is a lastNode recorded.
+        if(this.LastNode == null) {
+            System.out.print("No last node was cached, you probably don't have any items in this LinkedList");
+            return;
+        }
+        // just point the last Node of the LinkedList to the head Node of "List" (another LinkedList)
+        this.LastNode.next = List.LinkedList;
+        // cache the new last Node for the current LinkedList
+        LastNode = List.LastNode;
+        // Update Size cache by summing up both LinkedLists sizes
+        this.Size += List.Size;
+        System.out.print("List is concatenated!");
+    }
 
+    public static void main(String[] args) {
         long startTime = System.nanoTime();
 
-        BuildLinkedListFromArray(List);
-        ReverseUsingSlidingPointers();
+        LinkedList One = new LinkedList();
+        LinkedList Two = new LinkedList();
+        One.BuildLinkedListFromArray(new int[]{1, 2, 3, 4, 5, 6});
+//        One.DisplayLinkedList();
+        Two.BuildLinkedListFromArray(new int[]{7,8,9,10});
+//        Two.DisplayLinkedList();
+        One.Concatenate(Two);
+        One.DisplayLinkedList();
+
+//        BuildLinkedListFromArray(List);
+//        ReverseUsingSlidingPointers();
 //        InsertAtPos(20, 3);
 //        InsertLast(1);
 //        InsertLast(10);
@@ -217,8 +239,8 @@ public class LinkedList {
 //        DeleteAtPos(10);
         // print out the LinkedList ordered
 //        DisplayLinkedList();
-        System.out.print("Size is " + Size + "\n");
-        System.out.print("Last Node " + LastNode.data + "\n");
+//        System.out.print("Size is " + Size + "\n");
+//        System.out.print("Last Node " + LastNode.data + "\n");
         long endTime = System.nanoTime();
         System.out.println("Execution time in milliseconds : " +
                 (endTime - startTime) / 1000000);
